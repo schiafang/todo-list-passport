@@ -15,6 +15,11 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: 'users/login'
 }))
 
+router.get('/logout', (req, res) => {
+  req.logout()
+  res.redirect('/users/login')
+})
+
 router.post('/register', (req, res) => {
   // 使用解構賦值取出表單內容
   const { name, email, password, confirmPassword } = req.body

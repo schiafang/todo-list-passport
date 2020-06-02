@@ -21,7 +21,7 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
-usePassport(app) // 須在路由前呼叫
+usePassport(app) // 須在路由前先定義好Strategies，所以要在路由前呼叫
 
 app.use(routes)
 
