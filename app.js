@@ -21,8 +21,14 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
-usePassport(app) // 須在路由前先定義好Strategies，所以要在路由前呼叫
-
+//順序：定義Passport > res.locals取用授權狀態 > 進入路由
+usePassport(app)
+app.use((req, res, next) => {
+  // console.log(req.user)
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.user = req.user
+  next()
+})
 app.use(routes)
 
 app.listen(PORT, () => {
