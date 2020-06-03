@@ -1,6 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local').Strategy
 const User = require('../models/user')
+const bcrypt = require('bcryptjs')
 
 // 直接匯出 function
 module.exports = app => {
@@ -10,13 +11,18 @@ module.exports = app => {
   passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, done) => {
     User.findOne({ email })
       .then(user => {
+        // 先判斷是否存在帳號
         if (!user) {
           return done(null, false, { failureFlash: 'That email is not registered!' })
         }
-        if (user.password !== password) {
-          return done(null, false, { failureFlash: 'Email or Password incorrect.' })
-        }
-        return done(null, user)
+        // 使用bcrypt判斷密碼
+        return bcrypt.compare(password, user.password).then(isMatch => {
+          //if (user.password !== password) {}
+          if (!isMatch) {
+            return done(null, false, { failureFlash: 'Email or Password incorrect.' })
+          }
+          return done(null, user)
+        })
       })
       .catch(err => done(err, false))
   }))
