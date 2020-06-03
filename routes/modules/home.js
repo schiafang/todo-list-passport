@@ -5,10 +5,10 @@ const Todo = require('../../models/todo')
 
 router.get('/', (req, res) => {
   const userId = req.user._id
-  console.log(req.user)
+  // console.log(req.user)
   Todo.find({ userId })
     .lean()
-    .sort({ _id: 'asc' }) // desc
+    .sort({ _id: 'asc' })
     .then(todos => res.render('index', { todos }))
     .catch(error => console.error(error))
 })

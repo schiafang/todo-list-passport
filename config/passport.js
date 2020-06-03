@@ -11,10 +11,10 @@ module.exports = app => {
     User.findOne({ email })
       .then(user => {
         if (!user) {
-          return done(null, false, { message: 'That email is not registered!' })
+          return done(null, false, { failureFlash: 'That email is not registered!' })
         }
         if (user.password !== password) {
-          return done(null, false, { message: 'Email or Password incorrect.' })
+          return done(null, false, { failureFlash: 'Email or Password incorrect.' })
         }
         return done(null, user)
       })
@@ -29,7 +29,6 @@ module.exports = app => {
       .lean()
       .then(user => done(null, user))
       .catch(err => done(err, null))
+    // 反序列化錯誤處理中：Passport 看到第一個參數有 err 就不會處理後面的參數了，多放一個 null 表示 user 是空的
   })
 }
-// 反序列化錯誤處理中：Passport 看到第一個參數有 err 就不會處理後面的參數了
-// 多放一個 null 用來在語義上明確表達 user 是空的
