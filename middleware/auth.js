@@ -5,7 +5,7 @@ module.exports = {
       return next()
     }
     //未登入狀態沒有被授權時，再次發出 req 則跳出警告訊息
-    req.flash('warningMsg', '請先登入才能使用！')
+    // req.flash('warningMsg', '請先登入才能使用！')
     res.redirect('/users/login')
   }
 }

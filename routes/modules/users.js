@@ -21,11 +21,12 @@ router.get('/register', (req, res) => {
 router.post('/login', passport.authenticate('local', {
   successRedirect: '/',
   failureRedirect: 'users/login',
-  failureFlash: true,
+  failureFlash: true
 }))
 
 router.get('/logout', (req, res) => {
   req.logout()
+  req.flash('successMsg', '您已成功登出')
   res.redirect('/users/login')
 })
 

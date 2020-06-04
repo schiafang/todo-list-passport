@@ -13,13 +13,13 @@ module.exports = app => {
       .then(user => {
         // 先判斷是否存在帳號
         if (!user) {
-          return done(null, false, { failureFlash: 'That email is not registered!' })
+          return done(null, false, { message: 'That email is not registered!' })
         }
         // 使用bcrypt判斷密碼
         return bcrypt.compare(password, user.password).then(isMatch => {
           //if (user.password !== password) {}
           if (!isMatch) {
-            return done(null, false, { failureFlash: 'Email or Password incorrect.' })
+            return done(null, false, { message: 'Email or Password incorrect.' })
           }
           return done(null, user)
         })
